@@ -21,6 +21,6 @@ test:
   override:
     # @todo, pull in upstream updates, wipe and install drupal.
     - terminus site create-env --to-env=$PANTHEON_BRANCH --from-env=dev --site=$PANTHEON_SITE
-    - git clone $(terminus site connection-info --field=git_url --site=$PANTHEON_SITE  --env=$PANTHEON_BRANCH) ~/drupal8 --branch=$PANTHEON_BRANCH
-    - cd ~/migrate_pantheon/tests/circle && ./setup-d8-code
+    - cd ~/migrate_pantheon/tests/circle && ./setup-d8-site
+    - cd ~/migrate_pantheon/tests/circle && ./run-migration-on-pantheon
     - cd ~/migrate_pantheon/tests/circle && ./execute-circle-behat
