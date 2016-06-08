@@ -17,10 +17,10 @@ test:
     #- cd testing/ && composer install
     - composer global require pantheon-systems/terminus
     - terminus auth login --machine-token=$TerminusToken
-
-  override:
     # @todo, pull in upstream updates, wipe and install drupal.
     - terminus site create-env --to-env=$PANTHEON_BRANCH --from-env=dev --site=$PANTHEON_SITE
     - cd ~/migrate_pantheon/tests/circle && ./setup-d8-site
     - cd ~/migrate_pantheon/tests/circle && ./run-migration-on-pantheon
+
+  override:
     - cd ~/migrate_pantheon/tests/circle && ./execute-circle-behat
