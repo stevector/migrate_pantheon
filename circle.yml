@@ -24,10 +24,12 @@ test:
     # those modules on Panetheon.
     - cd ~/migrate_pantheon/tests/circle && ./setup-d8-site
 
-    # @todo, add a separate config step.
+    # Configure the migration, creating exportable, re-runnable configuration.
+    - cd ~/migrate_pantheon/tests/circle && ./setup-migration-config
 
     # Run the actual migration on Pantheon.
     - cd ~/migrate_pantheon/tests/circle && ./run-migration-on-pantheon
 
   override:
+    # Check that a node actually migrated.
     - cd ~/migrate_pantheon/tests/circle && ./verify-migration-succeeded
