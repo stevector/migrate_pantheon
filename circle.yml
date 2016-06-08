@@ -6,9 +6,7 @@ machine:
   environment:
     # DB config. Using default CircleCI's database.
     PANTHEON_BRANCH: ci$CIRCLE_BUILD_NUM
-    D7_SOURCE_BRANCH: ci$CIRCLE_BUILD_NUM
     PANTHEON_SITE: migrate-pantheon-d8
-    D7_SOURCE_PANTHEON_SITE: migrate-pantheon-d7
 
 dependencies:
   cache_directories:
