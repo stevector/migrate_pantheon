@@ -1,6 +1,12 @@
 #!/bin/bash
 
+# @todo, The script setup-migration-config isn't working quite as expected.
+# Ideally migrations are configured, saved to yml, and then run once or
+# repeatedly. Because that is not working this script is now configuring and
+# running in the same step.
+#terminus drush  --site=migrate-pantheon-d8  --env=$PANTHEON_BRANCH  "mi --all"
+
 terminus site wake --site=migrate-pantheon-d7 --env=dev
 export D7_DB_CONNECTION_STRING=$(terminus site connection-info --site=migrate-pantheon-d7  --env=dev --field=mysql_url)
 
-terminus drush  --site=migrate-pantheon-d8  --env=$PANTHEON_BRANCH  "mi --all"
+terminus drush  --site=migrate-pantheon-d8  --env=$PANTHEON_BRANCH  "migrate-upgrade  --legacy-db-url=$D7_DB_CONNECTION_STRING"
