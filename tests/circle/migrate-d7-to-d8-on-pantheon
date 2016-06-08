@@ -11,11 +11,11 @@ terminus site create-env --to-env=$D7_SOURCE_BRANCH --from-env=dev --site=$D7_SO
 terminus site wake --site=$D7_SOURCE_PANTHEON_SITE --env=$D7_SOURCE_BRANCH
 
 
-export D7_DB_DATABASE=$(terminus site connection-info  --site=$D7_SOURCE_PANTHEON_SITE  --env=$D7_SOURCE_BRANCH --field=mysql_database)
-export D7_DB_USERNAME=$(terminus site connection-info --site=$D7_SOURCE_PANTHEON_SITE  --env=$D7_SOURCE_BRANCH --field=mysql_username)
-export D7_DB_PASSWORD=$(terminus site connection-info --site=$D7_SOURCE_PANTHEON_SITE  --env=$D7_SOURCE_BRANCH --field=mysql_password)
-export D7_DB_HOST=$(terminus site connection-info --site=$D7_SOURCE_PANTHEON_SITE  --env=$D7_SOURCE_BRANCH --field=mysql_host)
-export D7_DB_PORT=$(terminus site connection-info --site=$D7_SOURCE_PANTHEON_SITE  --env=$D7_SOURCE_BRANCH --field=mysql_port)
+export D7_DB_DATABASE=$(terminus site connection-info  --site=migrate-pantheon-d7  --env=$D7_SOURCE_BRANCH --field=mysql_database)
+export D7_DB_USERNAME=$(terminus site connection-info --site=migrate-pantheon-d7  --env=$D7_SOURCE_BRANCH --field=mysql_username)
+export D7_DB_PASSWORD=$(terminus site connection-info --site=migrate-pantheon-d7  --env=$D7_SOURCE_BRANCH --field=mysql_password)
+export D7_DB_HOST=$(terminus site connection-info --site=migrate-pantheon-d7  --env=$D7_SOURCE_BRANCH --field=mysql_host)
+export D7_DB_PORT=$(terminus site connection-info --site=migrate-pantheon-d7  --env=$D7_SOURCE_BRANCH --field=mysql_port)
 
 terminus drush  --site=$PANTHEON_SITE  --env=$PANTHEON_BRANCH  "migrate-upgrade  --legacy-db-url='mysql://$D7_DB_USERNAME:$D7_DB_PASSWORD@$D7_DB_HOST:$D7_DB_PORT/$D7_DB_DATABASE'"
 terminus site delete-env --site=$D7_SOURCE_PANTHEON_SITE --env=$D7_SOURCE_BRANCH --remove-branch
