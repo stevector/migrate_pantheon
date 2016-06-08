@@ -10,17 +10,24 @@ cd ~/drupal8 && composer require drupal/migrate_upgrade --prefer-dist
 # Make a git commit
 git config --global user.email "$GitEmail"
 git config --global user.name "Circle CI Migration Automation"
-cd ~/drupal8 && git add . &&  git commit -m 'Result of build step'
+cd ~/drupal8 && git add . &&  git commit -m 'Result of build step' && git push
 
 
 
-export D7_DB_DATABASE = $(terminus site  connection-info  --site=$PANTHEON_SITE  --env=$PANTHEON_BRANCH  --field=mysql_database)
-export D7_DB_USERNAME = $(terminus site  connection-info  --site=$PANTHEON_SITE  --env=$PANTHEON_BRANCH  --field=mysql_username)
-export D7_DB_PASSWORD = $(terminus site  connection-info  --site=$PANTHEON_SITE  --env=$PANTHEON_BRANCH  --field=mysql_password)
-export D7_DB_HOST     = $(terminus site  connection-info  --site=$PANTHEON_SITE  --env=$PANTHEON_BRANCH  --field=mysql_host)
-export D7_DB_PORT     = $(terminus site  connection-info  --site=$PANTHEON_SITE  --env=$PANTHEON_BRANCH  --field=mysql_port)
+export D7_DB_DATABASE=$(terminus site  connection-info  --site=$PANTHEON_SITE  --env=$PANTHEON_BRANCH  --field=mysql_database)
+export D7_DB_USERNAME=$(terminus site  connection-info  --site=$PANTHEON_SITE  --env=$PANTHEON_BRANCH  --field=mysql_username)
+export D7_DB_PASSWORD=$(terminus site  connection-info  --site=$PANTHEON_SITE  --env=$PANTHEON_BRANCH  --field=mysql_password)
+export D7_DB_HOST=$(terminus site  connection-info  --site=$PANTHEON_SITE  --env=$PANTHEON_BRANCH  --field=mysql_host)
+export D7_DB_PORT=$(terminus site  connection-info  --site=$PANTHEON_SITE  --env=$PANTHEON_BRANCH  --field=mysql_port)
+
+terminus drush  --site=migrate-pantheon-d8  --env=$PANTHEON_BRANCH  "cr"
+terminus drush  --site=migrate-pantheon-d8  --env=$PANTHEON_BRANCH  "cr"
+terminus drush  --site=migrate-pantheon-d8  --env=$PANTHEON_BRANCH  "cr"
+terminus drush  --site=migrate-pantheon-d8  --env=$PANTHEON_BRANCH  "cr"
+terminus drush  --site=migrate-pantheon-d8  --env=$PANTHEON_BRANCH  "cr"
 
 
+terminus drush  --site=migrate-pantheon-d8  --env=$PANTHEON_BRANCH  "en -y  migrate_plus migrate_tools migrate_upgrade"
 
 
 terminus drush  --site=migrate-pantheon-d8  --env=$PANTHEON_BRANCH  "migrate-upgrade  --legacy-db-url='mysql://$D7_DB_USERNAME:$D7_DB_PASSWORD@$D7_DB_HOST:$D7_DB_PORT/$D7_DB_DATABASE'  "
