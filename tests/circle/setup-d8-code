@@ -12,8 +12,7 @@ git config --global user.email "$GitEmail"
 git config --global user.name "Circle CI Migration Automation"
 cd ~/drupal8 && git add . &&  git commit -m 'Result of build step' && git push
 
-
-
+terminus site wake --site=migrate-pantheon-d7 --env=dev
 export D7_DB_DATABASE=$(terminus site connection-info  --site=migrate-pantheon-d7  --env=dev  --field=mysql_database)
 export D7_DB_USERNAME=$(terminus site connection-info --site=migrate-pantheon-d7  --env=dev --field=mysql_username)
 export D7_DB_PASSWORD=$(terminus site connection-info --site=migrate-pantheon-d7  --env=dev --field=mysql_password)
