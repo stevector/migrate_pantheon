@@ -14,13 +14,20 @@ dependencies:
   pre:
 test:
   pre:
-    #- cd testing/ && composer install
     - composer global require pantheon-systems/terminus
     - terminus auth login --machine-token=$TerminusToken
-    # @todo, pull in upstream updates, wipe and install drupal.
-    - terminus site create-env --to-env=$PANTHEON_BRANCH --from-env=dev --site=$PANTHEON_SITE
+
+    # Make a new multidev env from a vanilla D8 site.
+    - cd ~/migrate_pantheon/tests/circle && ./create-fresh-d8-site
+
+    # Set up the D8 site with contrib migrate contrib modules and enable
+    # those modules on Panetheon.
     - cd ~/migrate_pantheon/tests/circle && ./setup-d8-site
+
+    # @todo, add a separate config step.
+
+    # Run the actual migration on Pantheon.
     - cd ~/migrate_pantheon/tests/circle && ./run-migration-on-pantheon
 
   override:
-    - cd ~/migrate_pantheon/tests/circle && ./execute-circle-behat
+    - cd ~/migrate_pantheon/tests/circle && ./verify-migration-succeeded
