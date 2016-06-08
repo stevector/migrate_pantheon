@@ -7,5 +7,5 @@ default:
   extensions:
     Behat\MinkExtension:
       # Supplied by env variable.
-      base_url: http://ci4-migrate-pantheon-d8.pantheonsite.io/node/1
+      #base_url: http://ci4-migrate-pantheon-d8.pantheonsite.io/node/1
       goutte: ~
