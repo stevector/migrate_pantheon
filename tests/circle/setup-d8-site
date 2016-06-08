@@ -1,0 +1,21 @@
+#!/bin/bash
+
+# Bring the code down to Circle so that modules can be added via composer.
+git clone $(terminus site connection-info --field=git_url --site=$PANTHEON_SITE  --env=$PANTHEON_BRANCH) ~/drupal8 --branch=$PANTHEON_BRANCH
+
+# Tell Composer where to find packages.
+cd ~/drupal8 && composer config repositories.drupal composer https://packagist.drupal-composer.org
+
+cd ~/drupal8 && composer require drupal/migrate_plus --prefer-dist
+cd ~/drupal8 && composer require drupal/migrate_tools --prefer-dist
+cd ~/drupal8 && composer require drupal/migrate_upgrade --prefer-dist
+
+# Make a git commit
+git config --global user.email "$GitEmail"
+git config --global user.name "Circle CI Migration Automation"
+cd ~/drupal8 && git add . &&  git commit -m 'Result of build step' && git push
+
+# Run a cache clear to take time. Otherwise immediately enabling modules
+# after a code push might not work.
+terminus site clear-cache --site=migrate-pantheon-d8  --env=$PANTHEON_BRANCH
+terminus drush --site=migrate-pantheon-d8  --env=$PANTHEON_BRANCH  "en -y  migrate_plus migrate_tools migrate_upgrade"

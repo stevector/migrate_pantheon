@@ -6,7 +6,7 @@ machine:
   environment:
     # DB config. Using default CircleCI's database.
     PANTHEON_BRANCH: ci$CIRCLE_BUILD_NUM
-    PANTHEON_SITE: migrate_pantheon_d8
+    PANTHEON_SITE: migrate-pantheon-d8
 
 dependencies:
   cache_directories:
@@ -14,11 +14,22 @@ dependencies:
   pre:
 test:
   pre:
-    #- cd testing/ && composer install
     - composer global require pantheon-systems/terminus
     - terminus auth login --machine-token=$TerminusToken
 
+    # Make a new multidev env from a vanilla D8 site.
+    - cd ~/migrate_pantheon/tests/circle && ./create-fresh-d8-site
+
+    # Set up the D8 site with contrib migrate contrib modules and enable
+    # those modules on Panetheon.
+    - cd ~/migrate_pantheon/tests/circle && ./setup-d8-site
+
+    # Configure the migration, creating exportable, re-runnable configuration.
+    - cd ~/migrate_pantheon/tests/circle && ./setup-migration-config
+
+    # Run the actual migration on Pantheon.
+    - cd ~/migrate_pantheon/tests/circle && ./run-migration-on-pantheon
+
   override:
-    # @todo, wipe and install wordpress
-    - terminus site create-env --to-env=$PANTHEON_BRANCH --from-env=dev --site=$PANTHEON_SITE
-    - git clone $(terminus site connection-info --field=git_url --site=$PANTHEON_SITE  --env=$PANTHEON_BRANCH) ~/drupal8 --branch=$PANTHEON_BRANCH
+    # Check that a node actually migrated.
+    - cd ~/migrate_pantheon/tests/circle && ./verify-migration-succeeded
