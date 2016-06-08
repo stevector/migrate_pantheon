@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Tell Composer where to find packages.
+cd ~/drupal8 && composer config repositories.drupal composer https://packagist.drupal-composer.org
+
+cd ~/drupal8 && composer require drupal/migrate_plus --prefer-dist
+cd ~/drupal8 && composer require drupal/migrate_tools --prefer-dist
+cd ~/drupal8 && composer require drupal/migrate_upgrade --prefer-dist
+
+# Make a git commit
+git config --global user.email "$GitEmail"
+git config --global user.name "Circle CI Migration Automation"
+cd ~/drupal8 && git add . &&  git commit -m 'Result of build step'
+
+terminus drush  --site=migrate-pantheon-d8  --env=ci4  "migrate-upgrade  --legacy-db-url='mysql://pantheon:3ab20e3a78ee4af0a66f119ae527d3d1@dbserver.dev.2168acdf-058a-471c-84ea-c6f5addc1000.drush.in:12852/pantheon'  "
