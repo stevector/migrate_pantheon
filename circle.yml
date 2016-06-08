@@ -19,6 +19,6 @@ test:
     - terminus auth login --machine-token=$TerminusToken
 
   override:
-    # @todo, wipe and install wordpress
+    # @todo, pull in upstream updates, wipe and install drupal.
     - terminus site create-env --to-env=$PANTHEON_BRANCH --from-env=dev --site=$PANTHEON_SITE
     - git clone $(terminus site connection-info --field=git_url --site=$PANTHEON_SITE  --env=$PANTHEON_BRANCH) ~/drupal8 --branch=$PANTHEON_BRANCH
