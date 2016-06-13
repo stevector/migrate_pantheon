@@ -5,7 +5,6 @@
 
 #terminus drush  --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH  "migrate-upgrade  --legacy-db-url=$D7_DB_CONNECTION_STRING --configuration-only"
 
-
 #terminus drush  --site=$PANTHEON_SITE  --env=$PANTHEON_BRANCH  "config-export -y"
 #terminus site code diffstat  --site=$PANTHEON_SITE  --env=$PANTHEON_BRANCH
 # @todo commit the code change. But there seems to be a multidev bug preventing
