@@ -7,6 +7,9 @@
 #terminus drush  --site=migrate-pantheon-d8  --env=$PANTHEON_BRANCH  "mi --all"
 
 terminus site wake --site=migrate-pantheon-d7 --env=dev
-export D7_DB_CONNECTION_STRING=$(terminus site connection-info --site=migrate-pantheon-d7  --env=dev --field=mysql_url)
+#export D7_DB_CONNECTION_STRING=$(terminus site connection-info --site=migrate-pantheon-d7  --env=dev --field=mysql_url)
 
-terminus drush  --site=migrate-pantheon-d8  --env=$PANTHEON_BRANCH  "migrate-upgrade  --legacy-db-url=$D7_DB_CONNECTION_STRING"
+#terminus drush  --site=migrate-pantheon-d8  --env=$PANTHEON_BRANCH  "migrate-upgrade  --legacy-db-url=$D7_DB_CONNECTION_STRING"
+
+terminus drush  --site=migrate-pantheon-d8  --env=$PANTHEON_BRANCH  "ms"
+terminus drush  --site=migrate-pantheon-d8  --env=$PANTHEON_BRANCH  "mi --all"
