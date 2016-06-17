@@ -19,3 +19,5 @@ cd ~/drupal8 && git add . &&  git commit -m 'Result of build step' && git push
 # after a code push might not work.
 terminus site clear-cache --site=migrate-pantheon-d8  --env=$PANTHEON_BRANCH
 terminus drush --site=migrate-pantheon-d8  --env=$PANTHEON_BRANCH  "en -y  migrate_plus migrate_tools migrate_upgrade"
+terminus --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH  site set-connection-mode --mode=sftp
+terminus  --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH drush  "config-export -y"
