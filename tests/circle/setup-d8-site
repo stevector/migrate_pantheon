@@ -9,6 +9,8 @@ cd ~/drupal8 && composer config repositories.drupal composer https://packagist.d
 cd ~/drupal8 && composer require drupal/migrate_plus --prefer-dist
 cd ~/drupal8 && composer require drupal/migrate_tools --prefer-dist
 cd ~/drupal8 && composer require drupal/migrate_upgrade --prefer-dist
+cd ~/drupal8 && composer require cweagans/composer-patches --prefer-dist
+
 
 # Make a git commit
 git config --global user.email "$GitEmail"
