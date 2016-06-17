@@ -3,12 +3,12 @@
 terminus site wake --site=migrate-pantheon-d7 --env=dev
 export D7_DB_CONNECTION_STRING=$(terminus site connection-info --site=migrate-pantheon-d7  --env=dev --field=mysql_url)
 
-terminus drush  --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH  site set-connection-mode --mode=sftp
+terminus --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH  site set-connection-mode --mode=sftp
 
-terminus drush  --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH  "migrate-upgrade  --legacy-db-url=$D7_DB_CONNECTION_STRING --configuration-only"
-
-terminus drush  --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH  "config-export -y"
-terminus drush  --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH  "cr"
+terminus  --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH drush  "migrate-upgrade  --legacy-db-url=$D7_DB_CONNECTION_STRING --configuration-only"
+terminus --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH  drush "cr"
+terminus  --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH drush  "config-export -y"
+terminus --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH  drush "cr"
 
 #terminus site code diffstat  --site=$PANTHEON_SITE  --env=$PANTHEON_BRANCH
 # @todo commit the code change. But there seems to be a multidev bug preventing
