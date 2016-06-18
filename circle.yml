@@ -20,8 +20,8 @@ test:
     - terminus auth login --machine-token=$TerminusToken
 
     # Make a new multidev env from a vanilla D8 site.
-    - cd ~/migrate_pantheon/tests/circle && ./create-fresh-d8-site
-        background: true
+    - cd ~/migrate_pantheon/tests/circle && ./create-fresh-d8-site:
+      background: true
 
     # Set up the D8 site with contrib migrate contrib modules and enable
     # those modules on Panetheon.
