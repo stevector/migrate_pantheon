@@ -21,7 +21,7 @@ terminus site wake --site=migrate-pantheon-d7 --env=dev
 export D7_DB_CONNECTION_STRING=$(terminus site connection-info --site=migrate-pantheon-d7  --env=dev --field=mysql_url)
 
 
-terminus  --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH drush  "migrate-upgrade  --legacy-db-key=drupal_7 --configure-only"
+terminus  --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH drush  "migrate-upgrade  --legacy-db-url=$D7_DB_CONNECTION_STRING --configure-only"
 terminus --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH  drush "cr"
 terminus  --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH drush  "config-export -y"
 terminus --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH  drush "cr"
