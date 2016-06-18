@@ -14,11 +14,16 @@ composer config repositories.drupal composer https://packagist.drupal-composer.o
 # https://www.drupal.org/node/2751151.
 # I hope you find the Rube Goldberb absurdity of this section as enjoyable
 # as I do.
+
+cd ..
+
 cp fixtures/composer.json.patch drupal8/
 cd drupal8
 git apply composer.json.patch
 rm composer.json.patch
 
+
+cd  drupal 8
 
 composer require cweagans/composer-patches --prefer-dist
 composer require drupal/migrate_plus:8.2.x-dev --prefer-dist
