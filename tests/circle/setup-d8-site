@@ -11,6 +11,9 @@ cd ~/drupal8 && composer require drupal/migrate_tools --prefer-dist
 cd ~/drupal8 && composer require drupal/migrate_upgrade --prefer-dist
 cd ~/drupal8 && composer require cweagans/composer-patches --prefer-dist
 
+cp fixtures/settings.migrate-on-pantheon.php ~/drupal8/sites/default/settings.migrate-on-pantheon.php
+cat fixtures/settings.php.addition >> ~/drupal8/sites/default/settings.php
+
 
 # Make a git commit
 git config --global user.email "$GitEmail"
