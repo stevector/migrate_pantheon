@@ -1,36 +1,43 @@
 #!/bin/bash
 
 # Bring the code down to Circle so that modules can be added via composer.
-git clone $(terminus site connection-info --field=git_url --site=$PANTHEON_SITE  --env=$PANTHEON_BRANCH) ~/drupal8 --branch=$PANTHEON_BRANCH
+git clone $(terminus site connection-info --field=git_url --site=$PANTHEON_SITE  --env=$PANTHEON_BRANCH) drupal8 --branch=$PANTHEON_BRANCH
 
 # Tell Composer where to find packages.
-cd ~/drupal8 && composer config repositories.drupal composer https://packagist.drupal-composer.org
-cd ~/drupal8 && composer require drupal/migrate_plus:8.2.x-dev --prefer-dist
-cd ~/drupal8 && composer require drupal/migrate_tools:8.2.x-dev --prefer-dist
-cd ~/drupal8 && composer require drupal/migrate_upgrade:8.2.x-dev --prefer-dist
-cd ~/drupal8 && composer require cweagans/composer-patches --prefer-dist
+cd drupal8
+composer config repositories.drupal composer https://packagist.drupal-composer.org
+composer require drupal/migrate_plus:8.2.x-dev --prefer-dist
+composer require drupal/migrate_tools:8.2.x-dev --prefer-dist
+composer require drupal/migrate_upgrade:8.2.x-dev --prefer-dist
+composer require cweagans/composer-patches --prefer-dist
 
-cp fixtures/settings.migrate-on-pantheon.php ~/drupal8/sites/default/settings.migrate-on-pantheon.php
-cat fixtures/settings.php.addition >> ~/drupal8/sites/default/settings.php
+echo "HELLO"
+cd ../
+cp fixtures/settings.migrate-on-pantheon.php drupal8/sites/default/
+cat fixtures/settings.php.addition >> drupal8/sites/default/settings.php
 
 # This is a section that applies a patch to composer.json... So that Composer
 # can apply a patch to drupal/migrate_upgrade from
 # https://www.drupal.org/node/2751151.
 # I hope you find the Rube Goldberb absurdity of this section as enjoyable
 # as I do.
-cp fixtures/composer.json.patch ~/drupal8/fixtures/composer.json.patch
-cd ~/drupal8 && git apply composer.json.patch && rm composer.json.patch
+cp fixtures/composer.json.patch drupal8/
+cd drupal8
+git apply composer.json.patch
+rm composer.json.patch
 
 # Update migrate_upgrade now that cweagans/composer-patches has something to
 # work with.
 composer update drupal/migrate_upgrade
 
 # Make sure submodules are not committed.
-rm -rf ~/drupal8/modules/migrate_plus/.git/
-rm -rf ~/drupal8/modules/migrate_tools/.git/
-rm -rf ~/drupal8/modules/migrate_upgrade/.git/
+rm -rf modules/migrate_plus/.git/
+rm -rf modules/migrate_tools/.git/
+rm -rf modules/migrate_upgrade/.git/
 
 # Make a git commit
 git config --global user.email "$GitEmail"
 git config --global user.name "Circle CI Migration Automation"
-cd ~/drupal8 && git add . &&  git commit -m 'Result of build step' && git push
+git add .
+git commit -m 'Result of build step'
+git push
