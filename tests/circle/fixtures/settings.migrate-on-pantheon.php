@@ -1,14 +1,10 @@
 <?php
 
-// Using an anonymous function because a named function has caused errors here.
-$get_secrets = function () {
-  $secretsFile = $_SERVER['HOME'] . '/files/private/secrets.json';
-  if (!file_exists($secretsFile)) {
-    return array();
-  }
-  return json_decode(file_get_contents($secretsFile), 1);
-};
-$secrets = $get_secrets();
+$secretsFile = $_SERVER['HOME'] . '/files/private/secrets.json';
+if (file_exists($secretsFile)) {
+  $secrets = json_decode(file_get_contents($secretsFile), 1);
+}
+
 if (!empty($secrets['migrate_source_db__url'])) {
   $parsed_url = parse_url($secrets['migrate_source_db__url']);
   if (!empty($parsed_url['port']) && !empty($parsed_url['host']) && !empty($parsed_url['pass'])) {
