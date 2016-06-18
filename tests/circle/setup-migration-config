@@ -1,10 +1,11 @@
 #!/bin/bash
 
-terminus secrets set --env=$CIRCLE_BUILD_NUM migrate_source_db__database $(terminus site connection-info --site=migrate-pantheon-d7 --env=dev --field=mysql_database)
-terminus secrets set --env=$CIRCLE_BUILD_NUM migrate_source_db__username $(terminus site connection-info --site=migrate-pantheon-d7 --env=dev --field=mysql_username)
-terminus secrets set --env=$CIRCLE_BUILD_NUM migrate_source_db__password $(terminus site connection-info --site=migrate-pantheon-d7 --env=dev --field=mysql_password)
-terminus secrets set --env=$CIRCLE_BUILD_NUM migrate_source_db__host $(terminus site connection-info --site=migrate-pantheon-d7 --env=dev --field=mysql_host)
-terminus secrets set --env=$CIRCLE_BUILD_NUM migrate_source_db__port $(terminus site connection-info --site=migrate-pantheon-d7 --env=dev --field=mysql_port)
+# @todo, update site-name-to variable
+terminus --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH secrets set migrate_source_db__database $(terminus site connection-info --site=migrate-pantheon-d7 --env=dev --field=mysql_database)
+terminus --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH secrets set migrate_source_db__username $(terminus site connection-info --site=migrate-pantheon-d7 --env=dev --field=mysql_username)
+terminus --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH secrets set migrate_source_db__password $(terminus site connection-info --site=migrate-pantheon-d7 --env=dev --field=mysql_password)
+terminus --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH secrets set migrate_source_db__host $(terminus site connection-info --site=migrate-pantheon-d7 --env=dev --field=mysql_host)
+terminus --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH secrets set migrate_source_db__port $(terminus site connection-info --site=migrate-pantheon-d7 --env=dev --field=mysql_port)
 
 
 # Run a cache clear to take time. Otherwise immediately enabling modules
