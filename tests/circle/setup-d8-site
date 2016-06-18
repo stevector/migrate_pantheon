@@ -5,13 +5,9 @@ git clone $(terminus site connection-info --field=git_url --site=$PANTHEON_SITE 
 
 # Tell Composer where to find packages.
 cd ~/drupal8 && composer config repositories.drupal composer https://packagist.drupal-composer.org
-
 cd ~/drupal8 && composer require drupal/migrate_plus:8.2.x-dev --prefer-dist
-rm -rf ~/drupal8/modules/migrate_plus/.git/
 cd ~/drupal8 && composer require drupal/migrate_tools:8.2.x-dev --prefer-dist
-rm -rf ~/drupal8/modules/migrate_tools/.git/
 cd ~/drupal8 && composer require drupal/migrate_upgrade:8.2.x-dev --prefer-dist
-rm -rf ~/drupal8/modules/migrate_upgrade/.git/
 cd ~/drupal8 && composer require cweagans/composer-patches --prefer-dist
 
 cp fixtures/settings.migrate-on-pantheon.php ~/drupal8/sites/default/settings.migrate-on-pantheon.php
@@ -28,6 +24,11 @@ cd ~/drupal8 && git apply composer.json.patch && rm composer.json.patch
 # Update migrate_upgrade now that cweagans/composer-patches has something to
 # work with.
 composer update drupal/migrate_upgrade
+
+# Make sure submodules are not committed.
+rm -rf ~/drupal8/modules/migrate_plus/.git/
+rm -rf ~/drupal8/modules/migrate_tools/.git/
+rm -rf ~/drupal8/modules/migrate_upgrade/.git/
 
 # Make a git commit
 git config --global user.email "$GitEmail"
