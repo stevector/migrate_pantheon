@@ -1,5 +1,22 @@
 #!/bin/bash
 
+terminus secrets set --env=$CIRCLE_BUILD_NUM migrate_source_db__database $(terminus site connection-info --site=migrate-pantheon-d7 --env=dev --field=mysql_database)
+terminus secrets set --env=$CIRCLE_BUILD_NUM migrate_source_db__username $(terminus site connection-info --site=migrate-pantheon-d7 --env=dev --field=mysql_username)
+terminus secrets set --env=$CIRCLE_BUILD_NUM migrate_source_db__password $(terminus site connection-info --site=migrate-pantheon-d7 --env=dev --field=mysql_password)
+terminus secrets set --env=$CIRCLE_BUILD_NUM migrate_source_db__host $(terminus site connection-info --site=migrate-pantheon-d7 --env=dev --field=mysql_host)
+terminus secrets set --env=$CIRCLE_BUILD_NUM migrate_source_db__port $(terminus site connection-info --site=migrate-pantheon-d7 --env=dev --field=mysql_port)
+
+
+# Run a cache clear to take time. Otherwise immediately enabling modules
+# after a code push might not work.
+terminus --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH site clear-cache
+terminus --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH drush "en -y  migrate_plus migrate_tools migrate_upgrade"
+terminus --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH site set-connection-mode --mode=sftp
+terminus --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH drush  "config-export -y"
+
+
+
+
 terminus site wake --site=migrate-pantheon-d7 --env=dev
 export D7_DB_CONNECTION_STRING=$(terminus site connection-info --site=migrate-pantheon-d7  --env=dev --field=mysql_url)
 
