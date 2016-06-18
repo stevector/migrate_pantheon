@@ -23,7 +23,7 @@ git apply composer.json.patch
 rm composer.json.patch
 
 
-cd  drupal 8
+cd  drupal8
 
 composer require cweagans/composer-patches --prefer-dist
 composer require drupal/migrate_plus:8.2.x-dev --prefer-dist
@@ -35,7 +35,7 @@ cp fixtures/settings.migrate-on-pantheon.php drupal8/sites/default/
 cat fixtures/settings.php.addition >> drupal8/sites/default/settings.php
 
 
-cd  drupal 8
+cd  drupal8
 
 # Make sure submodules are not committed.
 rm -rf modules/migrate_plus/.git/
