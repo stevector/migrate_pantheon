@@ -6,14 +6,16 @@ git clone $(terminus site connection-info --field=git_url --site=$PANTHEON_SITE 
 # Tell Composer where to find packages.
 cd ~/drupal8 && composer config repositories.drupal composer https://packagist.drupal-composer.org
 
-cd ~/drupal8 && composer require drupal/migrate_plus --prefer-dist
-cd ~/drupal8 && composer require drupal/migrate_tools --prefer-dist
-cd ~/drupal8 && composer require drupal/migrate_upgrade --prefer-dist
+cd ~/drupal8 && composer require drupal/migrate_plus8.2.x-dev --prefer-dist
+cd ~/drupal8 && composer require drupal/migrate_tools8.2.x-dev --prefer-dist
+cd ~/drupal8 && composer require drupal/migrate_upgrade:8.2.x-dev --prefer-dist
 cd ~/drupal8 && composer require cweagans/composer-patches --prefer-dist
 
 cp fixtures/settings.migrate-on-pantheon.php ~/drupal8/sites/default/settings.migrate-on-pantheon.php
 cat fixtures/settings.php.addition >> ~/drupal8/sites/default/settings.php
 
+# Update migrate_upgrade now that a patch is in place.
+composer update drupal/migrate_upgrade
 
 # Make a git commit
 git config --global user.email "$GitEmail"
