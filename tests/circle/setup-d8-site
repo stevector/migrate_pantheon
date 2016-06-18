@@ -35,11 +35,14 @@ cp fixtures/settings.migrate-on-pantheon.php drupal8/sites/default/
 cat fixtures/settings.php.addition >> drupal8/sites/default/settings.php
 
 
+cd  drupal 8
 
 # Make sure submodules are not committed.
 rm -rf modules/migrate_plus/.git/
 rm -rf modules/migrate_tools/.git/
 rm -rf modules/migrate_upgrade/.git/
+
+
 
 # Make a git commit
 git config --global user.email "$GitEmail"
