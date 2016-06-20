@@ -8,7 +8,7 @@ machine:
     PANTHEON_BRANCH: ci$CIRCLE_BUILD_NUM
     PANTHEON_SITE: migrate-pantheon-d8
     PANTHEON_D7_SITE: migrate-pantheon-d7
-    PANTHEON_D7_BRANCH: migrate-pantheon-d7
+    PANTHEON_D7_BRANCH: dev
 
 dependencies:
   cache_directories:
