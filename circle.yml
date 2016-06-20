@@ -9,7 +9,7 @@ machine:
     PANTHEON_SITE: migrate-pantheon-d8
     PANTHEON_D7_SITE: migrate-pantheon-d7
     PANTHEON_D7_BRANCH: dev
-    BEHAT_PARAMS: '{"extensions" : {"Behat\\MinkExtension" : {"base_url" : "http://'$PANTHEON_BRANCH'-'$PANTHEON_SITE'.pantheonsite.io"} }}'
+    BEHAT_PARAMS: '{"extensions" : {"Behat\\MinkExtension" : {"base_url" : "http://$PANTHEON_BRANCH-$PANTHEON_SITE.pantheonsite.io"} }}'
 
 dependencies:
   cache_directories:
