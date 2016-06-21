@@ -2,7 +2,8 @@
 
 # Set the source database connection info in a secrets file where it can be
 # read by settings.migrate-on-pantheon.php
-terminus --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH secrets set migrate_source_db__url $(terminus site connection-info --site=$PANTHEON_D7_SITE --env=$PANTHEON_D7_BRANCH --field=mysql_url)
+export D7_MYSQL_URL=$(terminus site connection-info --site=$PANTHEON_D7_SITE --env=$PANTHEON_D7_BRANCH --field=mysql_url)
+terminus --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH secrets set migrate_source_db__url $D7_MYSQL_URL
 
 # Run a cache clear to take time. Otherwise immediately enabling modules
 # after a code push might not work.
