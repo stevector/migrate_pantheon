@@ -17,7 +17,12 @@ terminus site wake --site=$PANTHEON_D7_SITE --env=$PANTHEON_D7_BRANCH
 
 # Configure the migrations and export them.
 export D7_DB_CONNECTION_STRING=$(terminus site connection-info --site=migrate-pantheon-d7  --env=dev --field=mysql_url)
+# This legacy-db-d7 flag relies on this patch
+# https://www.drupal.org/files/issues/legacy-db-key-2751151-2.patch
+# https://www.drupal.org/node/2751151
 terminus --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH drush  "migrate-upgrade --legacy-db-key=drupal_7 --configure-only"
+# These cache rebuilds might not be necessary but I have seen odd errors
+# related to migration registration go away after cache-rebuild.
 terminus --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH drush "cache-rebuild"
 terminus --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH drush  "config-export -y"
 terminus --site=$PANTHEON_SITE --env=$PANTHEON_BRANCH drush "cache-rebuild"
