@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Bring the code down to Circle so that modules can be added via composer.
-git clone $(terminus site connection-info --field=git_url --site=$PANTHEON_SITE  --env=$PANTHEON_BRANCH) drupal8 --branch=$PANTHEON_BRANCH
+git clone $(terminus site connection-info --field=git_url) drupal8 --branch=$TERMINUS_ENV
 cd drupal8
 
 # Tell Composer where to find packages.
