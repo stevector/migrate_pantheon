@@ -13,10 +13,12 @@ machine:
 dependencies:
   cache_directories:
     - ~/.composer/cache
-  post:
+    
+  override:
     - composer global require pantheon-systems/terminus
     - mkdir -p ~/terminus/plugins
     - git clone https://github.com/greg-1-anderson/terminus-secrets-plugin ~/terminus/plugins/terminus-secrets-plugin
+    - composer install
     - terminus auth login --machine-token=$TerminusToken
 test:
   pre:
