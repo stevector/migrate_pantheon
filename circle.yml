@@ -1,5 +1,7 @@
 # https://circleci.com/docs/configuration#machine
 machine:
+  timezone:
+    America/Los_Angeles
   php:
     # https://circleci.com/docs/environment#php
     version: 5.6.22
