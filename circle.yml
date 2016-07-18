@@ -2,7 +2,7 @@
 machine:
   php:
     # https://circleci.com/docs/environment#php
-    version: 5.5.11
+    version: 5.6.22
   environment:
     # DB config. Using default CircleCI's database.
     TERMINUS_ENV: ci$CIRCLE_BUILD_NUM
@@ -13,10 +13,13 @@ machine:
 dependencies:
   cache_directories:
     - ~/.composer/cache
-  post:
+    
+  override:
+    - composer global require "hirak/prestissimo:^0.3"
     - composer global require pantheon-systems/terminus
     - mkdir -p ~/terminus/plugins
     - git clone https://github.com/greg-1-anderson/terminus-secrets-plugin ~/terminus/plugins/terminus-secrets-plugin
+    - composer install
     - terminus auth login --machine-token=$TerminusToken
 test:
   pre:
