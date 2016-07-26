@@ -27,7 +27,7 @@ terminus drush "cache-rebuild"
 terminus drush  "config-export -y"
 terminus drush "cache-rebuild"
 
-#terminus site code diffstat
+terminus site code diffstat
 # @todo commit the code change. But there seems to be a multidev bug preventing
 # Terminus from seeing the code change. Terminus will only report a code change
 # in terminus site code diffstat after the dashboard is refreshed.
