@@ -20,7 +20,7 @@ dependencies:
     # xdebug makes composer slower.
     - echo "date.timezone = 'US/Central'"  >  /opt/circleci/php/7.0.7/etc/conf.d/xdebug.ini
     - composer global require "hirak/prestissimo:^0.3"
-    - composer global require pantheon-systems/terminus "<0.13.0"
+    - composer global require pantheon-systems/terminus ">=0.13.3"
     - mkdir -p ~/terminus/plugins
     - git clone https://github.com/greg-1-anderson/terminus-secrets-plugin ~/terminus/plugins/terminus-secrets-plugin
     - composer install
