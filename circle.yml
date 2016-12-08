@@ -39,3 +39,4 @@ stages:
         key: migrate-pantheon-{{ .Branch }}-{{ checksum "composer.lock" }}
         paths:
           -  /root/.composer/cache
+
