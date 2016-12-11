@@ -3,40 +3,54 @@ executorType: docker
 containerInfo:
   - image: rohara/pantheon:0.2
     env:
-      - TERMINUS_ENV=ci{{$CIRCLE_BUILD_NUM}}
       - TERMINUS_SITE=migrate-pantheon-d8
       - PANTHEON_D7_SITE=migrate-pantheon-d7
       - PANTHEON_D7_BRANCH=dev
 stages:
   build:
-    workDir: /root/migrate_pantheon
+    workDir: /home/ubuntu/migrate_pantheon
     steps:
       - type: checkout
+      - type: add-ssh-keys
       - type: cache-restore
         key: migrate-pantheon-{{ .Branch }}-{{ checksum "composer.lock" }}
       - type: shell
         command: |
+          composer global require "hirak/prestissimo:^0.3"
+          composer global require pantheon-systems/terminus ">=0.13.3"
           composer install --no-interaction
           terminus auth login --machine-token=$TerminusToken
       - type: shell
         command: |
+          export TERMINUS_ENV=ci$CIRCLE_BUILD_NUM
+          echo "Host *" >> ~/.ssh/config
+          echo "    StrictHostKeyChecking no" >> ~/.ssh/config
+
+          ssh-agent -s > ~/.ssh_agent_conf
+          source ~/.ssh_agent_conf
+
+          for _k in $(ls ${HOME}/.ssh/id_*); do
+            ssh-add ${_k} || true
+          done
+
+          cd tests/circle
+
           # Make a new multidev env from a vanilla D8 site.
-          cd tests/circle && ./create-fresh-d8-site.sh
+          ./create-fresh-d8-site.sh
 
           # Set up the D8 site with contrib migrate contrib modules and enable
           # those modules on Panetheon.
-          cd tests/circle && ./setup-d8-repo.sh
+          ./setup-d8-repo.sh
 
           # Configure the migration, creating exportable, re-runnable configuration.
-          cd tests/circle && ./configure-migrations.sh
+          ./configure-migrations.sh
 
           # Run the actual migration on Pantheon.
-          cd tests/circle && ./run-migration-on-pantheon.sh
+          ./run-migration-on-pantheon.sh
 
           # Check that a node actually migrated.
-          cd tests/circle && ./verify-migration-succeeded.sh
+          ./verify-migration-succeeded.sh
       - type: cache-save
         key: migrate-pantheon-{{ .Branch }}-{{ checksum "composer.lock" }}
         paths:
-          -  /root/.composer/cache
-
+          -  /home/ubuntu/.composer/cache
