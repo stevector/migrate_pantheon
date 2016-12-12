@@ -1,7 +1,7 @@
 version: 2
 executorType: docker
 containerInfo:
-  - image: rohara/pantheon:0.2
+  - image: stevector/migrate_pantheon:circle2-0
     env:
       - TERMINUS_SITE=migrate-pantheon-d8
       - PANTHEON_D7_SITE=migrate-pantheon-d7
