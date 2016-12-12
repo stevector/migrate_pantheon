@@ -20,4 +20,3 @@ However as this repository stands now, it is simply a meant to be an executable 
 ## Omissions
 
 * This repository uses a Drupal 7 source site. If there is a significant difference in how Drupal 6 is handled it may be worthwhile to script that process as well.
-* [File migrations are not shown or tested yet by these scripts](https://github.com/stevector/migrate_pantheon/issues/14).
