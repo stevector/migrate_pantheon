@@ -1,5 +1,8 @@
 #!/bin/bash
 
+
+yes | terminus site upstream-updates apply --accept-upstream
+
 # Bring the code down to Circle so that modules can be added via composer.
 git clone $(terminus site connection-info --field=git_url) drupal8 --branch=$TERMINUS_ENV
 cd drupal8
