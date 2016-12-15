@@ -1,5 +1,8 @@
 #!/bin/bash
 
+
+yes | terminus site upstream-updates apply --accept-upstream
+
 # Bring the code down to Circle so that modules can be added via composer.
 git clone $(terminus site connection-info --field=git_url) drupal8 --branch=$TERMINUS_ENV
 cd drupal8
@@ -8,9 +11,9 @@ cd drupal8
 composer config repositories.drupal composer https://packagist.drupal-composer.org
 
 # Bring in Migrate-related contrib modules.
-composer require drupal/migrate_plus:8.2.x-dev --prefer-dist
-composer require drupal/migrate_tools:8.2.x-dev --prefer-dist
-composer require drupal/migrate_upgrade:8.2.x-dev --prefer-dist
+composer require drupal/migrate_plus:8.3.x-dev --prefer-dist
+composer require drupal/migrate_tools:8.3.x-dev --prefer-dist
+composer require drupal/migrate_upgrade:8.3.x-dev --prefer-dist
 # Make sure submodules are not committed.
 rm -rf modules/migrate_plus/.git/
 rm -rf modules/migrate_tools/.git/
