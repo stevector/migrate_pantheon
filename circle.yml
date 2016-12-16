@@ -1,45 +1,56 @@
-# https://circleci.com/docs/configuration#machine
-machine:
-  php:
-    # https://circleci.com/docs/environment#php
-    version: 7.0.7
-  environment:
-    # DB config. Using default CircleCI's database.
-    TERMINUS_ENV: ci$CIRCLE_BUILD_NUM
-    TERMINUS_SITE: migrate-pantheon-d8
-    PANTHEON_D7_SITE: migrate-pantheon-d7
-    PANTHEON_D7_BRANCH: dev
+version: 2
+executorType: docker
+containerInfo:
+  - image: stevector/migrate_pantheon:circle2-0
+    env:
+      - TERMINUS_SITE=migrate-pantheon-d8
+      - PANTHEON_D7_SITE=migrate-pantheon-d7
+      - PANTHEON_D7_BRANCH=dev
+stages:
+  build:
+    workDir: /home/ubuntu/migrate_pantheon
+    steps:
+      - type: checkout
+      - type: add-ssh-keys
+      - type: cache-restore
+        key: migrate-pantheon-{{ .Branch }}-{{ checksum "composer.lock" }}
+      - type: shell
+        command: |
+          composer global require "hirak/prestissimo:^0.3"
+          composer global require pantheon-systems/terminus ">=0.13.3"
+          composer install --no-interaction
+          terminus auth login --machine-token=$TerminusToken
+      - type: shell
+        command: |
+          export TERMINUS_ENV=ci$CIRCLE_BUILD_NUM
+          echo "Host *" >> ~/.ssh/config
+          echo "    StrictHostKeyChecking no" >> ~/.ssh/config
 
-dependencies:
-  cache_directories:
-    - ~/.composer/cache
-    
-  override:
-    # Set the PHP timezone so that Behat script does not fail.
-    # Using > instead of >> will overwrite the file and disable xdebug.
-    # xdebug makes composer slower.
-    - echo "date.timezone = 'US/Central'"  >  /opt/circleci/php/7.0.7/etc/conf.d/xdebug.ini
-    - composer global require "hirak/prestissimo:^0.3"
-    - composer global require pantheon-systems/terminus ">=0.13.3"
-    - mkdir -p ~/terminus/plugins
-    - git clone https://github.com/greg-1-anderson/terminus-secrets-plugin ~/terminus/plugins/terminus-secrets-plugin
-    - composer install
-    - terminus auth login --machine-token=$TerminusToken
-test:
-  pre:
-    # Make a new multidev env from a vanilla D8 site.
-    - cd tests/circle && ./create-fresh-d8-site.sh
+          ssh-agent -s > ~/.ssh_agent_conf
+          source ~/.ssh_agent_conf
 
-    # Set up the D8 site with contrib migrate contrib modules and enable
-    # those modules on Panetheon.
-    - cd tests/circle && ./setup-d8-repo.sh
+          for _k in $(ls ${HOME}/.ssh/id_*); do
+            ssh-add ${_k} || true
+          done
 
-    # Configure the migration, creating exportable, re-runnable configuration.
-    - cd tests/circle && ./configure-migrations.sh
+          cd tests/circle
 
-    # Run the actual migration on Pantheon.
-    - cd tests/circle && ./run-migration-on-pantheon.sh
+          # Make a new multidev env from a vanilla D8 site.
+          ./create-fresh-d8-site.sh
 
-  override:
-    # Check that a node actually migrated.
-    - cd tests/circle && ./verify-migration-succeeded.sh
+          # Set up the D8 site with contrib migrate contrib modules and enable
+          # those modules on Panetheon.
+          ./setup-d8-repo.sh
+
+          # Configure the migration, creating exportable, re-runnable configuration.
+          ./configure-migrations.sh
+
+          # Run the actual migration on Pantheon.
+          ./run-migration-on-pantheon.sh
+
+          # Check that a node actually migrated.
+          ./verify-migration-succeeded.sh
+      - type: cache-save
+        key: migrate-pantheon-{{ .Branch }}-{{ checksum "composer.lock" }}
+        paths:
+          -  /home/ubuntu/.composer/cache
