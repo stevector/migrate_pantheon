@@ -8,12 +8,12 @@ git clone $(terminus site connection-info --field=git_url) drupal8 --branch=$TER
 cd drupal8
 
 # Tell Composer where to find packages.
-composer config repositories.drupal composer https://packagist.drupal-composer.org
+composer config repositories.drupal composer https://packages.drupal.org/8
 
 # Bring in Migrate-related contrib modules.
-composer require drupal/migrate_plus:8.3.x-dev --prefer-dist
-composer require drupal/migrate_tools:8.3.x-dev --prefer-dist
-composer require drupal/migrate_upgrade:8.3.x-dev --prefer-dist
+composer require drupal/migrate_plus:3.x-dev --prefer-dist
+composer require drupal/migrate_tools:3.x-dev --prefer-dist
+composer require drupal/migrate_upgrade:3.x-dev --prefer-dist
 # Make sure submodules are not committed.
 rm -rf modules/migrate_plus/.git/
 rm -rf modules/migrate_tools/.git/
