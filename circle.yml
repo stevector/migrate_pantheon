@@ -5,8 +5,8 @@ machine:
     version: 7.0.7
   environment:
     
-    MULTIDEV_DELETE_PATTERN: ^ci
-    TERMINUS_ENV: ci$CIRCLE_BUILD_NUM
+    MULTIDEV_DELETE_PATTERN: ^ci-
+    TERMINUS_ENV: ci-$CIRCLE_BUILD_NUM
     TERMINUS_SITE: migrate-pantheon-d8
     PANTHEON_D7_SITE: migrate-pantheon-d7
     PANTHEON_D7_BRANCH: dev
