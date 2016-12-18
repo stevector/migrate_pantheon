@@ -23,7 +23,7 @@ dependencies:
     - composer global require "hirak/prestissimo:^0.3"
     - composer global require pantheon-systems/terminus ">=0.13.3"
     - mkdir -p ~/terminus/plugins
-    - git clone https://github.com/greg-1-anderson/terminus-secrets-plugin ~/terminus/plugins/terminus-secrets-plugin
+    - git clone https://github.com/greg-1-anderson/terminus-secrets-plugin ~/terminus/plugins/terminus-secrets-plugin && cd ~/terminus/plugins/terminus-secrets-plugin && git checkout 4d32d2d0a7e3ea2d1623d50d59c667e27c5d3b9b
     - composer install
     - terminus auth login --machine-token=$TerminusToken
 test:
