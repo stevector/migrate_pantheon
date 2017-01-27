@@ -31,6 +31,7 @@ dependencies:
 test:
   pre:
     # Make a new multidev env from a vanilla D8 site.
+    - cd tests/circle && ./delete-old-multidevs.sh
     - cd tests/circle && ./create-fresh-d8-site.sh
 
     # Set up the D8 site with contrib migrate contrib modules and enable
@@ -46,5 +47,3 @@ test:
   override:
     # Check that a node actually migrated.
     - cd tests/circle && ./verify-migration-succeeded.sh
-  post:
-    - cd tests/circle && ./delete-old-multidevs.sh
