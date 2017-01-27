@@ -5,7 +5,6 @@
 
 
 cd drupal8
-terminus  env:wake $SITE_ENV
 terminus drush $SITE_ENV -- status
 terminus  env:wake $PANTHEON_D7_SITE.$PANTHEON_D7_BRANCH
 export D7_MYSQL_URL=$(terminus connection:info $PANTHEON_D7_SITE.$PANTHEON_D7_BRANCH --field=mysql_url)
@@ -19,9 +18,6 @@ terminus env:clear-cache  $SITE_ENV
 terminus drush $SITE_ENV -- en -y migrate_plus migrate_tools migrate_upgrade
 terminus connection:set $SITE_ENV sftp
 terminus drush $SITE_ENV -- config-export -y
-
-# Make sure the source site is available.
-
 
 terminus drush $SITE_ENV -- migrate-upgrade --legacy-db-key=drupal_7 --configure-only  --legacy-root=$PANTHEON_D7_URL
 # These cache rebuilds might not be necessary but I have seen odd errors
