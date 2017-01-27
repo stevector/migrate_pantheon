@@ -8,6 +8,7 @@ machine:
     MULTIDEV_DELETE_PATTERN: ^ci-
     TERMINUS_ENV: ci-$CIRCLE_BUILD_NUM
     TERMINUS_SITE: migrate-pantheon-d8
+    SITE_ENV: $TERMINUS_SITE.$TERMINUS_ENV
     PANTHEON_D7_SITE: migrate-pantheon-d7
     PANTHEON_D7_BRANCH: dev
 
@@ -23,11 +24,14 @@ dependencies:
     - composer global require "hirak/prestissimo:^0.3"
     - composer global require pantheon-systems/terminus
     - terminus auth:login --machine-token=$TerminusToken
+    - mkdir -p ~/.terminus/plugins
+    - composer create-project -n -d ~/.terminus/plugins pantheon-systems/terminus-build-tools-plugin:~1
+    - composer create-project -n -d ~/.terminus/plugins pantheon-systems/terminus-secrets-plugin:~1
     - composer install
 test:
   pre:
     # Make a new multidev env from a vanilla D8 site.
-    - cd tests/circle && ./delete-old-multidevs.sh
+    - terminus build-env:delete my-pantheon-site '^ci-' --keep=5 --delete-branch
     - cd tests/circle && ./create-fresh-d8-site.sh
 
     # Set up the D8 site with contrib migrate contrib modules and enable
