@@ -21,11 +21,9 @@ dependencies:
     # xdebug makes composer slower.
     - echo "date.timezone = 'US/Central'"  >  /opt/circleci/php/7.0.7/etc/conf.d/xdebug.ini
     - composer global require "hirak/prestissimo:^0.3"
-    - composer global require pantheon-systems/terminus ">=0.13.3 <0.99"
-    - mkdir -p ~/terminus/plugins
-    - git clone https://github.com/greg-1-anderson/terminus-secrets-plugin ~/terminus/plugins/terminus-secrets-plugin && cd ~/terminus/plugins/terminus-secrets-plugin && git checkout 4d32d2d0a7e3ea2d1623d50d59c667e27c5d3b9b
+    - composer global require pantheon-systems/terminus
+    - terminus auth:login --machine-token=$TerminusToken
     - composer install
-    - terminus auth login --machine-token=$TerminusToken
 test:
   pre:
     # Make a new multidev env from a vanilla D8 site.
