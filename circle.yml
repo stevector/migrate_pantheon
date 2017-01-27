@@ -31,7 +31,7 @@ dependencies:
 test:
   pre:
     # Make a new multidev env from a vanilla D8 site.
-    - terminus build-env:delete $TERMINUS_SITE '^ci-' --keep=5 --delete-branch
+    - terminus build-env:delete:ci $TERMINUS_SITE '^ci-' --keep=5 --delete-branch
     - cd tests/circle && ./create-fresh-d8-site.sh
 
     # Set up the D8 site with contrib migrate contrib modules and enable
