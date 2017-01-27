@@ -3,6 +3,8 @@
 # Set the source database connection info in a secrets file where it can be
 # read by settings.migrate-on-pantheon.php
 
+terminus  env:wake $SITE_ENV
+terminus drush $SITE_ENV -- status
 terminus  env:wake $PANTHEON_D7_SITE.$PANTHEON_D7_BRANCH
 export D7_MYSQL_URL=$(terminus connection:info $PANTHEON_D7_SITE.$PANTHEON_D7_BRANCH --field=mysql_url)
 terminus secrets:set $SITE_ENV migrate_source_db__url $D7_MYSQL_URL
