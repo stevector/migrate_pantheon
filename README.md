@@ -10,8 +10,7 @@ However as this repository stands now, it is simply a meant to be an executable 
 
 * Within a pre-existing plain Drupal 8 site, create a Pantheon Multidev environment based on CircleCI build number.
 * Clone that Drupal 8 site inside CircleCI and install Migrate Upgrade, Migrate Tools, and Migrate Plus using Composer.
-  * [Add a patch to Migrate Upgrade](https://www.drupal.org/node/2751151).
-  * Configure settings.php to include settings.migrate-on-pantheon.php, which reads source database credentials from secrets.json.
+* Configure settings.php to include settings.migrate-on-pantheon.php, which reads source database credentials from secrets.json.
 * Creates secrets.json using the [Terminus secrets plugin](https://github.com/pantheon-systems/terminus-secrets-plugin).
 * Configures migration using `drush migrate-upgrade --configure-only`
 * Run migrations using `drush migrate-import --all`
