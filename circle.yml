@@ -9,7 +9,7 @@ machine:
     TERMINUS_ENV: ci-$CIRCLE_BUILD_NUM
     TERMINUS_SITE: migrate-pantheon-d8
     SITE_ENV: $TERMINUS_SITE.$TERMINUS_ENV
-    PANTHEON_D7_SITE: migrate-pantheon-d7
+    PANTHEON_D7_SITE: d7-migration-source
     PANTHEON_D7_BRANCH: dev
 
 dependencies:
