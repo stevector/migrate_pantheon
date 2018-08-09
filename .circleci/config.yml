@@ -1,0 +1,50 @@
+version: 2
+# https://circleci.com/docs/configuration#machine
+jobs:
+    # @todo, separate build and test phases.
+    build:
+        docker:
+            - image: quay.io/pantheon-public/build-tools-ci:1.x
+        working_directory: ~/pantheon_advanced_page_cache
+        environment:
+            BASH_ENV: ~/.bashrc
+            TZ: "/usr/share/zoneinfo/America/Los_Angeles"
+            TERMINUS_SITE: d8papc
+        steps:
+            - checkout
+
+
+            - run:
+                name: login-pantheon
+                command: |
+                  terminus auth:login -n --machine-token="$TERMINUS_TOKEN"
+                  terminus env:list --field=id $TERMINUS_SITE | grep -v '[a-z]' | grep -Eo '[0-9]{1,9}' | sort --numeric-sort --reverse | sed 1,7d | xargs -n1 -I ENV terminus env:delete --yes $TERMINUS_SITE.ENV
+            - run:
+                name: make-multidev
+                command: |
+                  touch $HOME/.ssh/config
+                  echo "StrictHostKeyChecking no" >> "$HOME/.ssh/config"
+                  terminus env:create $TERMINUS_SITE.dev ${CIRCLE_BUILD_NUM}
+                  terminus connection:set ${TERMINUS_SITE}.${CIRCLE_BUILD_NUM} sftp
+                  terminus drush ${TERMINUS_SITE}.${CIRCLE_BUILD_NUM} -- site-install -y
+                  terminus drush ${TERMINUS_SITE}.${CIRCLE_BUILD_NUM} -- cset system.performance cache.page.max_age 600 -y
+                  # Giving anon users permission to make nodes makes the Behat test execute much faster.
+                  # Perms are changed back at the end of the build.
+                  terminus drush ${TERMINUS_SITE}.${CIRCLE_BUILD_NUM} -- role-add-perm anonymous "create page content,create article content"
+            - run:
+                name: Composer require
+                command: |
+                  terminus composer ${TERMINUS_SITE}.${CIRCLE_BUILD_NUM} -- config repositories.papc vcs git@github.com:pantheon-systems/pantheon_advanced_page_cache.git
+                  terminus composer ${TERMINUS_SITE}.${CIRCLE_BUILD_NUM} -- config minimum-stability dev
+                  terminus composer ${TERMINUS_SITE}.${CIRCLE_BUILD_NUM} -- require drupal/pantheon_advanced_page_cache:dev-8.x-1.x#$CIRCLE_SHA1
+                  terminus composer ${TERMINUS_SITE}.${CIRCLE_BUILD_NUM} -- require drush-ops/behat-drush-endpoint
+                  # drush dl is faster than composer require so use it where possible.
+                  terminus drush ${TERMINUS_SITE}.${CIRCLE_BUILD_NUM} -- dl devel-8.x-1.0-rc2 views_custom_cache_tag
+                  terminus drush ${TERMINUS_SITE}.${CIRCLE_BUILD_NUM} -- en -y devel_generate views_custom_cache_tag_demo pantheon_advanced_page_cache
+            - run:
+                name: run behat
+                command: ./tests/behat/run-behat.sh
+            - run:
+                name: Cleanup
+                command: |
+                  terminus drush ${TERMINUS_SITE}.${CIRCLE_BUILD_NUM} -- role-remove-perm anonymous "create page content,create article content"
