@@ -10,7 +10,7 @@ jobs:
             BASH_ENV: ~/.bashrc
             TZ: "/usr/share/zoneinfo/America/Los_Angeles"
             MULTIDEV_DELETE_PATTERN: ^ci-
-            TERMINUS_ENV: ci-$CIRCLE_BUILD_NUM
+            TERMINUS_ENV: $CIRCLE_BUILD_NUM
             TERMINUS_SITE: migrate-pantheon-d8
             SITE_ENV: $TERMINUS_SITE.$TERMINUS_ENV
             PANTHEON_D7_SITE: d7-migration-source
@@ -23,7 +23,7 @@ jobs:
                 name: log in
                 command: |
                   terminus auth:login -n --machine-token="$TerminusToken"
-                  # terminus env:list --field=id $TERMINUS_SITE | grep -v '[a-z]' | grep -Eo '[0-9]{1,9}' | sort --numeric-sort --reverse | sed 1,7d | xargs -n1 -I ENV terminus env:delete --yes $TERMINUS_SITE.ENV
+                  terminus env:list --field=id $TERMINUS_SITE | grep -v '[a-z]' | grep -Eo '[0-9]{1,9}' | sort --numeric-sort --reverse | sed 1,7d | xargs -n1 -I ENV terminus env:delete --yes $TERMINUS_SITE.ENV
 
             - restore_cache:
                 key: dependency-cache-{{ checksum "composer.lock" }}
