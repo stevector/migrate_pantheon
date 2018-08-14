@@ -5,7 +5,7 @@ jobs:
     build:
         docker:
             - image: quay.io/pantheon-public/build-tools-ci:1.x
-        working_directory: ~/pantheon_advanced_page_cache
+        working_directory: ~/working
         environment:
             BASH_ENV: ~/.bashrc
             TZ: "/usr/share/zoneinfo/America/Los_Angeles"
@@ -14,8 +14,6 @@ jobs:
             PANTHEON_D7_BRANCH: dev
         steps:
             - checkout
-
-
             - run:
                 name: log in
                 command: |
@@ -38,7 +36,6 @@ jobs:
             - run:
                 name: all the things
                 command: |
-
 
                   export TERMINUS_ENV=$CIRCLE_BUILD_NUM
                   export SITE_ENV=$TERMINUS_SITE.$TERMINUS_ENV
