@@ -8,9 +8,12 @@ cd drupal8
 composer config repositories.drupal composer https://packages.drupal.org/8
 
 # Bring in Migrate-related contrib modules.
-composer require drupal/migrate_plus:3.x-dev --prefer-dist
-composer require drupal/migrate_tools:3.x-dev --prefer-dist
-composer require drupal/migrate_upgrade:3.x-dev --prefer-dist
+composer require drupal/migrate_plus
+#:3.x-dev --prefer-dist
+composer require drupal/migrate_tools
+#:3.x-dev --prefer-dist
+composer require drupal/migrate_upgrade
+#:3.x-dev --prefer-dist
 # Make sure submodules are not committed.
 rm -rf modules/migrate_plus/.git/
 rm -rf modules/migrate_tools/.git/
