@@ -1,7 +1,6 @@
 version: 2
 # https://circleci.com/docs/configuration#machine
 jobs:
-    # @todo, separate build and test phases.
     build:
         docker:
             - image: quay.io/pantheon-public/build-tools-ci:1.x
@@ -39,8 +38,9 @@ jobs:
 
                   export TERMINUS_ENV=$CIRCLE_BUILD_NUM
                   export SITE_ENV=$TERMINUS_SITE.$TERMINUS_ENV
+                  cd .circleci/tests
                   # Make a new multidev env from a vanilla D8 site.
-                  cd .circleci/tests && ./create-fresh-d8-site.sh
+                  ./create-fresh-d8-site.sh
 
                   # Set up the D8 site with contrib migrate contrib modules and enable
                   # those modules on Panetheon.
@@ -52,9 +52,5 @@ jobs:
                   # Run the actual migration on Pantheon.
                   ./run-migration-on-pantheon.sh
 
-
                   # Check that a node actually migrated.
                   ./verify-migration-succeeded.sh
-
-                  ./delete-old-multidevs.sh
-
