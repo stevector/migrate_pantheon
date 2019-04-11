@@ -48,7 +48,7 @@ jobs:
                 name: configure migrations
                 command: |
                    # Configure the migration, creating exportable, re-runnable configuration.
-                  ./.circleci/tests/configure-migrations.sh
+                   ./.circleci/tests/configure-migrations.sh
 
             - run:
                 name: run migrations
