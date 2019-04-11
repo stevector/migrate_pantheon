@@ -34,25 +34,57 @@ jobs:
             - run:
                 name: create fresh site
                 command: |
+<<<<<<< HEAD
                   # Make a new multidev env from a vanilla D8 site.
                   ./.circleci/tests/create-fresh-d8-site.sh
 
             - run:
                 name: set up repo
                 command: |
+=======
+                  cd .circleci/tests
+                  # Make a new multidev env from a vanilla D8 site.
+                  ./create-fresh-d8-site.sh
+                  
+                  
+            - run:
+                name: set up repo
+                command: |
+
+                  cd .circleci/tests
+>>>>>>> origin/master
                   # Set up the D8 site with contrib migrate contrib modules and enable
                   # those modules on Panetheon.
                   ./.circleci/tests/setup-d8-repo.sh
 
+<<<<<<< HEAD
             - run:
                 name: configure migrations
                 command: |
+=======
+
+            - run:
+                name: configure migrations
+                command: |
+                  cd .circleci/tests
+>>>>>>> origin/master
                    # Configure the migration, creating exportable, re-runnable configuration.
                    ./.circleci/tests/configure-migrations.sh
+
+<<<<<<< HEAD
+            - run:
+                name: run migrations
+                command: |
+=======
 
             - run:
                 name: run migrations
                 command: |
+                  export TERMINUS_ENV=$CIRCLE_BUILD_NUM
+                  export SITE_ENV=$TERMINUS_SITE.$TERMINUS_ENV
+                  cd .circleci/tests
+
+>>>>>>> origin/master
                   # Run the actual migration on Pantheon.
                   ./.circleci/tests/run-migration-on-pantheon.sh
 
@@ -60,5 +92,9 @@ jobs:
                 name: verify migrations
                 command: |
                   cd .circleci/tests
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/master
                   # Check that a node actually migrated.
                   ./verify-migration-succeeded.sh
