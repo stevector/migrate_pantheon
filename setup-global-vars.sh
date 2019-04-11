@@ -1,5 +1,4 @@
 #!/bin/bash
-
 set -ex
 
 mkdir -p $HOME/.ssh && echo "StrictHostKeyChecking no" >> "$HOME/.ssh/config"
