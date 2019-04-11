@@ -2,7 +2,6 @@
 
 # Set the source database connection info in a secrets file where it can be
 # read by settings.migrate-on-pantheon.php
-
 cd drupal8
 terminus drush $SITE_ENV -- status
 terminus  env:wake $PANTHEON_D7_SITE.$PANTHEON_D7_BRANCH
