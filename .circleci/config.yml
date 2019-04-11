@@ -40,8 +40,7 @@ jobs:
     - run:
         name: set up repo
         command: |
-          # Set up the D8 site with contrib migrate contrib modules and enable
-          # those modules on Panetheon.
+          # Set up the D8 site with contrib migrate contrib modules and enable those modules on Panetheon.
           ./.circleci/tests/setup-d8-repo.sh
 
     - run:
