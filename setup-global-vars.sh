@@ -7,7 +7,7 @@ BASH_ENV=${BASH_ENV:-$HOME/.bashrc}
 touch $BASH_ENV
 
 (
-  echo 'export TERMINUS_ENV=1314
+  echo 'export TERMINUS_ENV=1314'
   echo 'export SITE_ENV=${TERMINUS_SITE}.${TERMINUS_ENV}'
 ) >> $BASH_ENV
 
