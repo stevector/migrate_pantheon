@@ -6,7 +6,6 @@ jobs:
             - image: quay.io/pantheon-public/build-tools-ci:4.x
         working_directory: ~/working
         environment:
-            BASH_ENV: ~/.bashrc
             TZ: "/usr/share/zoneinfo/America/Los_Angeles"
             TERMINUS_SITE: migrate-pantheon-d8
             PANTHEON_D7_SITE: d7-migration-source
