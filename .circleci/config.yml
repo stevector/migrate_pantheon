@@ -37,8 +37,7 @@ jobs:
                   cd .circleci/tests
                   # Make a new multidev env from a vanilla D8 site.
                   ./create-fresh-d8-site.sh
-                  
-                  
+
             - run:
                 name: set up repo
                 command: |
@@ -48,7 +47,6 @@ jobs:
                   # those modules on Panetheon.
                   ./setup-d8-repo.sh
 
-
             - run:
                 name: configure migrations
                 command: |
@@ -56,14 +54,10 @@ jobs:
                    # Configure the migration, creating exportable, re-runnable configuration.
                   ./configure-migrations.sh
 
-
             - run:
                 name: run migrations
                 command: |
-                  export TERMINUS_ENV=$CIRCLE_BUILD_NUM
-                  export SITE_ENV=$TERMINUS_SITE.$TERMINUS_ENV
                   cd .circleci/tests
-
                   # Run the actual migration on Pantheon.
                   ./run-migration-on-pantheon.sh
 
@@ -71,6 +65,5 @@ jobs:
                 name: verify migrations
                 command: |
                   cd .circleci/tests
-
                   # Check that a node actually migrated.
                   ./verify-migration-succeeded.sh
