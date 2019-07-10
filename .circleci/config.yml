@@ -50,16 +50,14 @@ jobs:
             - run:
                 name: configure migrations
                 command: |
-                  cd .circleci/tests
                    # Configure the migration, creating exportable, re-runnable configuration.
-                  ./configure-migrations.sh
+                  ./.circleci/tests/configure-migrations.sh
 
             - run:
                 name: run migrations
                 command: |
-                  cd .circleci/tests
                   # Run the actual migration on Pantheon.
-                  ./run-migration-on-pantheon.sh
+                  ./.circleci/tests/run-migration-on-pantheon.sh
 
             - run:
                 name: verify migrations
