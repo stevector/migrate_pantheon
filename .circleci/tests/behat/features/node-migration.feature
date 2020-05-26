@@ -7,6 +7,6 @@ Feature: Node migration
 		Given I am on "node/1"
 		Then print current URL
 		Then I should see "test node made on D7"
-		Then the response should contain "<img rel=\"og:image rdfs:seeAlso\" src=\"/sites/default/files/field/image/drops.png\""
+		Then the response should contain "<img rel=\"og:image rdfs:seeAlso\" src=\"/sites/default/files/styles/large/public/field/image/drops.png\""
 		Then I go to "sites/default/files/field/image/drops.png"
 		Then the response status code should be 200
