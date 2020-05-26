@@ -9,7 +9,7 @@ composer config repositories.drupal composer https://packages.drupal.org/8
 
 # Bring in Migrate-related contrib modules.
 composer require drupal/migrate_plus:~4
-composer require drupal/migrate_tools:~4
+composer require drupal/migrate_tools:4.1
 composer require drupal/migrate_upgrade:3-rc4
 # Make sure submodules are not committed.
 rm -rf modules/migrate_plus/.git/
